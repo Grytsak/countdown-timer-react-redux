@@ -1,0 +1,55 @@
+@import './helpers/variables.scss';
+
+.app {
+  max-width: 900px;
+  width: 100%;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+// Buttons
+.btn {
+  display: inline-block;
+  background: none;
+  border: none;
+  border-radius: 5px;
+  box-sizing: border-box;
+  color: $black-main;
+  cursor: pointer;
+  height: 40px;
+  outline: none;
+  padding: 0 15px;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.btn__regular {
+  background-color: $white-main;
+  border: 1px solid $black-main;
+}
+
+.btn__stop {
+  color: $white-main;
+  background-color: $gray-main;
+  pointer-events: none;
+}
+
+.btn__success {
+  color: $white-main;
+  background-color: $green-main;
+}
+
+.timers_list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 1400px;
+  width: 100%;
+  list-style: none;
+}
+// Buttons end

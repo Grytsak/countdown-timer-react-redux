@@ -1,9 +1,96 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 
 
 import classes from '../../scss/components/TimerForm.module.scss';
 import classesCommon from '../../scss/Common.module.scss';
 
+
+const TimerForm = (props) => {
+  const [title, setTitle] = useState('');
+  const [date, setDate] = useState('');
+  const [time, setTime] = useState('');
+
+
+  const cancelData = (e) => {
+    e.preventDefault();
+    setTitle('');
+    setDate('');
+    setTime('');
+  }
+
+  const onTitleChange = (e) => {
+    setTitle(e.target.value);
+  }
+
+  const onDateChange = (e) => {
+    setDate(e.target.value);
+  }
+
+  const onTimeChange = (e) => {
+    setTime(e.target.value);
+  }
+
+  const addNewTimer = (e) => {
+    e.preventDefault();
+    if(title && date && time) {
+      props.addNewTimer(title, date, time);
+      setTitle('');
+      setDate('');
+      setTime('');
+    }
+  }
+
+  const toggleAddBtn = () => {
+    return (title && date && time) ? `${classesCommon.btn} ${classesCommon.btn__success}` : `${classesCommon.btn} ${classesCommon.btn__stop}`
+  }
+
+  return(
+    <form className={classes.timer__form}>
+        <label htmlFor="timer__text_input">Event Name</label>
+        <input 
+          type="text"
+          name="title" 
+          placeholder="Event Name" 
+          value={title} 
+          id="timer__text_input" 
+          className={classes.timer__text_input} 
+          onChange={onTitleChange}/>
+
+        <label htmlFor="timer__date_input">Event Date</label>
+        <input 
+          type="date"
+          name="date" 
+          value={date}  
+          id="timer__date_input"
+          className={classes.timer__date_input}
+          onChange={onDateChange} />
+
+        <label htmlFor="timer__time_input">Event Time</label>
+        <input 
+        type="time" 
+        step="1"
+        name="time"
+        value={time}  
+        id="timer__time_input" 
+        className={classes.timer__time_input} 
+        onChange={onTimeChange}/> 
+
+        <div className={classes.timer__btn_container}>
+          <button 
+            className={`${classesCommon.btn} ${classesCommon.btn__regular}`}
+            onClick={cancelData}>Cancel</button>
+
+          <button 
+            className={toggleAddBtn()}
+            onClick={addNewTimer}>Add</button>
+        </div>
+      </form>
+  )
+}
+
+export default TimerForm;
+
+/*
 export default class TimerForm extends Component {
   state = {
     title: '',
@@ -85,3 +172,4 @@ export default class TimerForm extends Component {
     )
   }
 }
+*/

@@ -1,9 +1,88 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import store from '../../app/store';
 import watch from 'redux-watch';
 
 import classes from '../../scss/components/Timer.module.scss';
 
+const Timer = (props) => {
+  const [days, setDays] = useState(0);
+  const [hours, setHours] = useState(0);
+  const [minutes, setMinutes] = useState(0);
+  const [seconds, setSeconds] = useState(0);
+  const [message, setMessage] = useState('');
+
+  let interval = '';
+
+  const getTimeUntil = (deadline) => {
+    const time = Date.parse(deadline) - Date.parse(new Date());
+    if (time < 0) {
+      setDays(0);
+      setHours(0);
+      setMinutes(0);
+      setSeconds(0);
+      setMessage('Countdown is finished!');
+    } else {
+      let seconds = Math.floor((time / 1000) % 60);
+      let minutes = Math.floor((time / 1000 / 60) % 60);
+      let hours = Math.floor((time / (1000 * 60 * 60)) % 24);
+      let days = Math.floor(time / (1000 * 60 * 60 * 24));
+
+      setDays(days);
+      setHours(hours);
+      setMinutes(minutes);
+      setSeconds(seconds);
+    }
+  }
+
+  useEffect(() => {
+    const countDownDate = props.timer.countDownDate;
+      if(Date.parse(countDownDate) - Date.parse(new Date()) <= 0) {
+        setDays(0);
+        setHours(0);
+        setMinutes(0);
+        setSeconds(0);
+        setMessage('You picked date before now');
+      } else {
+        setMessage('');
+        interval = setInterval(() => getTimeUntil(countDownDate), 1000);
+      }
+  });
+
+  return(
+    <div className={classes.timer}>
+        <span className={classes.timer__delete} onClick={() => props.deleteTimer(props.timer.id)}>x</span>
+        <h2 className={classes.timer__title}>{props.timer.title ? props.timer.title : 'Event Name'}</h2>
+        <div className={classes.timer__date_container}>
+        
+        <div className={classes.timer__date_block}>
+          <p id="timer-days" className={classes.timer__date_number}>{days}</p>
+          <p className={classes.timer__date_text}>Days</p>
+          </div>
+          
+          <div className={classes.timer__date_block}>
+          <p id="timer-hours" className={classes.timer__date_number}>{hours}</p>
+          <p className={classes.timer__date_text}>Hours</p>
+          </div>
+          
+          <div className={classes.timer__date_block}>
+          <p id="timer-minutes" className={classes.timer__date_number}>{minutes}</p>
+          <p className={classes.timer__date_text}>Minutes</p>
+          </div>
+          
+          <div className={classes.timer__date_block}>
+          <p id="timer-seconds" className={classes.timer__date_number}>{seconds}</p>
+          <p className={classes.timer__date_text}>Seconds</p>
+          </div>
+        </div>
+        <p className={classes.timer__message}>{message}</p>
+      </div>
+  );
+
+}
+
+export default Timer;
+
+/*
 export default class Timer extends Component {
   state = {
     days: 0,
@@ -95,4 +174,4 @@ export default class Timer extends Component {
       )
     }
   }
-  
+  */
